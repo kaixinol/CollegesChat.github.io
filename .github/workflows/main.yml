@@ -1,26 +1,56 @@
-name: Build with Hugo
 
-on: [push, pull_request]
+name: Deploy static content to Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        hugo-version:
-          - 'latest'
-          - '0.158.0'
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true  # Fetch Hugo themes (true OR recursive)
-          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          hugo-version: ${{ matrix.hugo-version }}
-          extended: true
+          enable-cache: true
 
-      - name: Run Hugo
-        run: hugo --minify
+      - name: Clone Another Public Repo
+        uses: actions/checkout@v4
+        with:
+          repository: 'CollegesChat/website-gengerator'
+          path: 'gengerator'
+      - name: Build Markdown
+        run: |
+          uv sync
+          python main.py
+          cd ..
+      - name: Build Static Website
+        run: |
+          hugo build --minify -d dist
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
