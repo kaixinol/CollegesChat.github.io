@@ -1,13 +1,20 @@
 baseURL: http://0.0.0.0:1313/
-title: Documentation
 theme: hugo-book
-
+title: 大学生活质量指北
+locale: zh-cn
+hasCJKLanguage: true
+description: 收集全世界各高校招生时不会写明但实实在在影响大学生活质量的详尽信息
 copyright: "This is a copyright placeholder"
+disableKinds: ["taxonomy", "term","rss"]
 
 # Book configuration
 disablePathToLower: true
 enableGitInfo: true
-
+languages:
+  zh:
+    label: "中文"
+    contentDir: "content"
+    weight: 1
 # Needed for mermaid/katex shortcodes
 markup:
   goldmark:
@@ -18,35 +25,8 @@ markup:
   highlight:
     style: base16-snazzy
 
-# Multi-lingual mode config
-# There are different options to translate files
-# See https://gohugo.io/content-management/multilingual/#translation-by-filename
-# And https://gohugo.io/content-management/multilingual/#translation-by-content-directory
-# languages:
-#   en:
-#     languageName: English
-#     contentDir: content
-#     weight: 1
-#   zh:
-#     languageName: Chinese
-#     contentDir: content.zh
-#     weight: 2
-#   he:
-#     languageName: Hebrew
-#     contentDir: content.he
-#     languageDirection: rtl
-#     weight: 3
-
 menu:
   main:
-    - name: 首页
-      pageRef: /
-
-    - name: 搜索
-      weight: 90
-      params:
-        type: search
-
     - name: GitHub
       weight: 100
       url: https://github.com/CollegesChat/university-information
@@ -121,3 +101,16 @@ params:
   # /!\ This is an experimental feature, might be removed or changed at any time
   # (Optional, experimental, default false) Enables a drop-down menu for translations only if a translation is present.
   BookTranslatedOnly: false
+  BookSearchConfig:
+    encode: "icase"
+    tokenize: "forward"
+minify:
+  minifyOutput: true
+  tdewolff:
+    html:
+      keepDefaultAttrVals: false
+      keepEndTags: true        # 建议保持 true，防止某些复杂 CSS 布局因为没有闭合标签而错位
+      keepQuotes: true         # 建议保持 true，完全遵守现代 HTML 规范
+      keepWhitespace: false    # 干掉所有空格和换行
+    js:
+      keepVarNames: false      # 开启混淆，把 JS 变量名压缩到最短

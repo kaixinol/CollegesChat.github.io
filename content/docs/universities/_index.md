@@ -1,9 +1,10 @@
 ---
 title: 问卷数据
 cascade:
-  sidebar:
-    hide: true
   url: /universities/:slug/
+  layout: landing
 sidebar:
   hide: false
+bookCollapseSection: true
+weight: 30
 ---
