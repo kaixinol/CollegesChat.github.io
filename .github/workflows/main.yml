@@ -44,6 +44,8 @@ jobs:
           repository: 'CollegesChat/website-generator'
           path: 'generator'
       - name: Build Markdown
+        env:
+          SITE_DIR: ${{ github.workspace }}
         run: |
           cd generator
           uv sync
