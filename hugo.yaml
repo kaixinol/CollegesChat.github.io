@@ -1,4 +1,4 @@
-baseURL: http://0.0.0.0:1313/
+baseURL: https://collegeschat.github.io/questionnaire-report-theme/
 theme: hugo-book
 title: 大学生活质量指北
 locale: zh-cn
