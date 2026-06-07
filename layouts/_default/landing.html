@@ -8,7 +8,7 @@
   <input type="checkbox" class="hidden toggle" id="menu-control" />
   <input type="checkbox" class="hidden toggle" id="toc-control" />
   <main class="container flex">
-    {{ partial "docs/search" . }}
+    {{ template "menu-container" . }}
     <div class="book-page">
       <header class="book-header hidden">
         {{ template "header" . }} <!-- Mobile layout header -->
@@ -41,7 +41,7 @@
 {{ end }}
 
 {{ define "menu" }}
-  {{ partial "docs/menu" . }}
+  {{ partial "docs/search" . }}
 {{ end }}
 
 {{ define "header" }}
