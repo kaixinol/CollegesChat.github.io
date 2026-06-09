@@ -1,0 +1,46 @@
+.id-link {
+  position: relative;
+  text-decoration: underline dotted #aaa;
+  cursor: help;
+  font-family: monospace;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  /* 禁用系统自带的长按弹出菜单 */
+}
+
+.id-link::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(50, 50, 50, 0.95);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: sans-serif;
+  white-space: nowrap;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 电脑端：鼠标悬停显示 */
+@media (hover: hover) {
+  .id-link:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px);
+  }
+}
+
+/* 手机端：通过 JS 动态添加 show-tip 类来显示 */
+.id-link.show-tip::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
+}

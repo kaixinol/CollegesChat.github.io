@@ -3,6 +3,8 @@
 <head>
   {{ partial "docs/html-head" . }}
   {{ partial "docs/inject/head" . }}
+  <script src="{{ "js/university-spec.js" | relURL }}"></script>
+  <link rel="stylesheet" href="{{ "css/university-spec.css" | relURL }}">
 </head>
 <body dir="{{ default "ltr" .Site.Language.Direction }}" class="book-kind-{{ .Kind }} book-type-{{ .Type }}{{ with .Layout }} book-layout-{{ . }}{{ end }}">
   <input type="checkbox" class="hidden toggle" id="menu-control" />
@@ -19,7 +21,7 @@
       {{ partial "docs/inject/content-after" . }}
 
       <footer class="book-footer">
-接送        {{ template "copyright" . }} <!-- Copyright block -->
+{{ template "copyright" . }} <!-- Copyright block -->
       </footer>
 
       <label for="menu-control" class="hidden book-menu-overlay"></label>
