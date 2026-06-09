@@ -54,6 +54,10 @@ jobs:
       - name: Build Static Website
         run: |
           hugo build --minify -d dist
+          cd dist
+          rm -rf asciinema katex
+          rm mermaid.min.js
+          cd ..
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
