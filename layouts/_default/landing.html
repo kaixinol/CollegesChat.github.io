@@ -45,6 +45,11 @@
 
 {{ define "menu" }}
   {{ partial "docs/search" . }}
+  <div style="margin-top: 20px; padding: 10px 0;">
+    <a href="{{ site.BaseURL }}" style="text-decoration: none; color: inherit;">
+      ← 返回主站
+    </a>
+  </div>
 {{ end }}
 
 {{ define "header" }}
