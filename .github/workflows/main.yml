@@ -51,9 +51,16 @@ jobs:
           uv sync
           uv run python main.py
           cd ..
+      - name: Get Current Time
+        # 先用单独的一步把东八区时间算出来，并写入 GitHub 全局变量中
+        run: |
+          echo "BUILD_TIME=$(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+
+      - name: Replace Copyright in hugo.yaml
+        run: |
+          sed -i "s#copyright: \"\$copyright\"#copyright: \"大学生活质量指北 - <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener'>CC BY-NC-SA 4.0</a> | Generated on ${{ env.BUILD_TIME }} (UTC+8)\"#g" hugo.yaml
       - name: Build Static Website
         run: |
-          sed -i "s#copyright: \"\$copyright\"#copyright: \"<a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener'>CC BY-NC-SA 4.0</a> | Generated on \$(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S') (UTC+8)\"#g" hugo.yaml
           hugo build --minify -d dist
           cd dist
           rm -rf asciinema katex
