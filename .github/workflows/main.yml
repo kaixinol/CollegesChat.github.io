@@ -58,7 +58,7 @@ jobs:
 
       - name: Replace Copyright in hugo.yaml
         run: |
-          sed -i "s#copyright: \"\$copyright\"#copyright: \"大学生活质量指北 - <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener'>CC BY-NC-SA 4.0</a> | Generated on ${{ env.BUILD_TIME }} (UTC+8)\"#g" hugo.yaml
+          sed -i "s#copyright: \"\$copyright\"#copyright: \"<a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener'>CC BY-NC-SA 4.0</a> | Generated on ${{ env.BUILD_TIME }} (UTC+8)\"#g" hugo.yaml
       - name: Build Static Website
         run: |
           hugo build --minify -d dist
