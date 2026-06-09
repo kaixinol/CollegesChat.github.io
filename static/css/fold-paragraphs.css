@@ -1,0 +1,30 @@
+/* 针对需要折叠的段落的基础样式 */
+.foldable-p {
+  position: relative;
+  transition: max-height 0.3s ease;
+  margin-bottom: 8px !important;
+}
+
+/* 限制 3 行的核心 CSS */
+.foldable-p.is-clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  /* 限制 3 行 */
+  overflow: hidden;
+}
+
+/* 展开/收起 按钮的样式 */
+.fold-toggle-btn {
+  display: inline-block;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  user-select: none;
+}
+
+.fold-toggle-btn:hover {
+  text-decoration: underline;
+}

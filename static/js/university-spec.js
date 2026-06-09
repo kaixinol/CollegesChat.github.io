@@ -1,3 +1,4 @@
+import { initParagraphFolder } from "./fold-paragraphs.js";
 function onDomReady(callback) {
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", callback, { once: true });
@@ -171,4 +172,5 @@ onDomReady(() => {
             );
         }
     });
+    initParagraphFolder();
 });

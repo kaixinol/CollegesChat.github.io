@@ -3,8 +3,9 @@
 <head>
   {{ partial "docs/html-head" . }}
   {{ partial "docs/inject/head" . }}
-  <script src="{{ "js/university-spec.js" | relURL }}"></script>
+  <script type="module" src="{{ "js/university-spec.js" | relURL }}"></script>
   <link rel="stylesheet" href="{{ "css/university-spec.css" | relURL }}">
+  <link rel="stylesheet" href="{{ "css/fold-paragraphs.css" | relURL }}">
 </head>
 <body dir="{{ default "ltr" .Site.Language.Direction }}" class="book-kind-{{ .Kind }} book-type-{{ .Type }}{{ with .Layout }} book-layout-{{ . }}{{ end }}">
   <input type="checkbox" class="hidden toggle" id="menu-control" />
