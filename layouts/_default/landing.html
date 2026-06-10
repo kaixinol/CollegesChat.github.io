@@ -1,109 +1,111 @@
 <!DOCTYPE html>
-<html lang="{{ default .Site.Language.Name .Site.Language.Locale }}" dir="{{ default "ltr" .Site.Language.Direction }}">
-<head>
-  {{ partial "docs/html-head" . }}
-  {{ partial "docs/inject/head" . }}
-  <script type="module" src="{{ "js/university-spec.js" | relURL }}"></script>
-  <link rel="stylesheet" href="{{ "css/university-spec.css" | relURL }}">
-  <link rel="stylesheet" href="{{ "css/fold-paragraphs.css" | relURL }}">
-</head>
-<body dir="{{ default "ltr" .Site.Language.Direction }}" class="book-kind-{{ .Kind }} book-type-{{ .Type }}{{ with .Layout }} book-layout-{{ . }}{{ end }}">
-  <input type="checkbox" class="hidden toggle" id="menu-control" />
-  <input type="checkbox" class="hidden toggle" id="toc-control" />
-  <main class="container flex">
-    {{ template "menu-container" . }}
-    <div class="book-page">
-      <header class="book-header hidden">
-        {{ template "header" . }} <!-- Mobile layout header -->
-      </header>
-
-      {{ partial "docs/inject/content-before" . }}
-      {{ template "main" . }} <!-- Page Content -->
-      {{ partial "docs/inject/content-after" . }}
-
-      <footer class="book-footer">
-{{ template "copyright" . }} <!-- Copyright block -->
-      </footer>
-
-      <label for="menu-control" class="hidden book-menu-overlay"></label>
-    </div>
-
-    {{ template "toc-container" . }} <!-- Table of Contents -->
-  </main>
-
-  {{ partial "docs/inject/body" . }}
-</body>
+<html lang="{{ default .Site.Language.Name .Site.Language.Locale }}"
+      dir="{{ default "ltr" .Site.Language.Direction }}">
+  <head>
+    {{ partial "docs/html-head" . }}
+    {{ partial "docs/inject/head" . }}
+    <script type="module" src="{{ "js/university-spec.js" | relURL }}"></script>
+    <link rel="stylesheet" href="{{ "css/university-spec.css" | relURL }}">
+    <link rel="stylesheet" href="{{ "css/fold-paragraphs.css" | relURL }}">
+  </head>
+  <body dir="{{ default "ltr" .Site.Language.Direction }}"
+        class="book-kind-{{ .Kind }} book-type-{{ .Type }}{{ with .Layout }} book-layout-{{ . }}{{ end }}">
+    <input type="checkbox" class="hidden toggle" id="menu-control" />
+    <input type="checkbox" class="hidden toggle" id="toc-control" />
+    <main class="container flex">
+      {{ template "menu-container" . }}
+      <div class="book-page">
+        <header class="book-header hidden">
+          {{ template "header" . }} <!-- Mobile layout header -->
+        </header>
+        {{ partial "docs/inject/content-before" . }}
+        {{ template "main" . }} <!-- Page Content -->
+        {{ partial "docs/inject/content-after" . }}
+        <footer class="book-footer">
+          {{ template "copyright" . }} <!-- Copyright block -->
+        </footer>
+        <label for="menu-control" class="hidden book-menu-overlay"></label>
+      </div>
+      {{ template "toc-container" . }} <!-- Table of Contents -->
+    </main>
+    {{ partial "docs/inject/body" . }}
+  </body>
 </html>
-
 {{ define "menu-container" }}
 <aside class="book-menu">
-  <div class="book-menu-content">
-    {{ template "menu" . }}
-  </div>
+  <div class="book-menu-content">{{ template "menu" . }}</div>
 </aside>
 {{ end }}
-
 {{ define "menu" }}
-  {{ partial "docs/search" . }}
-  <div style="margin-top: 20px; padding: 10px 0;">
-    <a href="{{ site.BaseURL }}" style="text-decoration: none; color: inherit;">
-      ← 返回主站
-    </a>
-  </div>
+{{ partial "docs/search" . }}
+<div style="margin-top: 20px; padding: 10px 0;">
+  <a href="{{ site.BaseURL }}"
+     style="text-decoration: none;
+            color: inherit">← 返回主页</a>
+</div>
 {{ end }}
-
 {{ define "header" }}
-  {{ partial "docs/header" . }}
-
-  {{ if partial "docs/toc-show" . }}
-  <aside class="hidden">
-    {{ template "toc" . }}
-  </aside>
-  {{ end }}
+{{ partial "docs/header" . }}
+{{ if partial "docs/toc-show" . }}
+<aside class="hidden">
+  {{ template "toc" . }}
+</aside>
 {{ end }}
-
+{{ end }}
 {{ define "footer" }}
-  {{ partial "docs/footer" . }}
+{{ partial "docs/footer" . }}
 {{ end }}
-
 {{ define "clipboard" }}
-  {{ with resources.Get "clipboard.js" | resources.Minify }}
-    <script>{{ .Content | safeJS }}</script>
-  {{ end }}
+{{ with resources.Get "clipboard.js" | resources.Minify }}
+<script>{{ .Content | safeJS }}</script>
 {{ end }}
-
+{{ end }}
 {{ define "copyright" }}
-  {{ if or .Site.Copyright .Params.Copyright }}
-  <div class="book-copyright flex justify-center">
-    {{ partial "docs/copyright" . }}
-  </div>
-  {{ end }}
+{{ if or .Site.Copyright .Params.Copyright }}
+<div class="book-copyright flex justify-center">{{ partial "docs/copyright" . }}</div>
 {{ end }}
-
+{{ end }}
 {{ define "comments" }}
-  {{ if and .Content (default true (default .Site.Params.BookComments .Params.BookComments)) }}
-  <div class="book-comments">
-    {{- partial "docs/comments" . -}}
-  </div>
-  {{ end }}
+{{ if and .Content (default true (default .Site.Params.BookComments .Params.BookComments)) }}
+<div class="book-comments">{{- partial "docs/comments" . -}}</div>
 {{ end }}
-
+{{ end }}
 {{ define "main" }}
-  <article class="markdown book-article">
-    {{- .Content -}}
-  </article>
+<article class="markdown book-article">
+  {{- .Content -}}
+  {{- $currentLink := .RelPermalink -}}
+  {{- $relPath := .File.Path -}} {{- $isArchived := hasPrefix $relPath "docs/archived/" -}}
+  {{- if $isArchived -}}
+  {{- $purePath := strings.TrimPrefix "docs/archived/" $relPath -}}
+  {{- $targetRelPath := printf "docs/%s" $purePath -}}
+  {{- $targetFile := printf "content/%s" $targetRelPath -}}
+  {{- $mainLink := strings.TrimPrefix "/archived" $currentLink -}}
+  {{- if os.FileExists $targetFile -}}
+  <div class="book-hint info">
+    📄 本页面已有新版：<a href="{{ $mainLink }}">点击查看最新内容</a>
+  </div>
+  {{- end -}}
+  {{- else -}}
+  {{- $purePath := strings.TrimPrefix "docs/" $relPath -}}
+  {{- $targetRelPath := printf "docs/archived/%s" $purePath -}}
+  {{- $targetFile := printf "content/%s" $targetRelPath -}}
+  {{- $archiveLink := printf "/archived%s" $currentLink -}}
+  {{- $archiveLink = replace $archiveLink "//" "/" -}}
+  {{- if os.FileExists $targetFile -}}
+  <div class="book-hint warning">
+    📦 本页面存在历史存档：<a href="{{ $archiveLink }}">查看历史版本</a>
+  </div>
+  {{- end -}}
+  {{- end -}}
+</article>
 {{ end }}
-
 {{ define "toc-container" }}
-  {{ if partial "docs/toc-show" . }}
-  <aside class="book-toc">
-    <div class="book-toc-content">
-      {{ template "toc" . }}
-    </div>
-  </aside>
-  {{ end }}
+{{ if partial "docs/toc-show" . }}
+<aside class="book-toc">
+  <div class="book-toc-content">{{ template "toc" . }}</div>
+</aside>
 {{ end }}
-
+{{ end }}
 {{ define "toc" }}
-  {{ partial "docs/toc" . }}
+{{ partial "docs/toc" . }}
 {{ end }}
