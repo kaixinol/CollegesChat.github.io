@@ -53,6 +53,8 @@ jobs:
           export LOGURU_LEVEL="WARNING"
           export LOGURU_COLORIZE=False
           cd generator
+          wget https://github.com/CollegesChat/china-university-list/releases/latest/download/output.csv
+          cat output.csv >> ./required/colleges.csv
           uv sync
           uv run python main.py
           cd ..

@@ -95,6 +95,8 @@ main() {
   export LOGURU_LEVEL="WARNING"
   export LOGURU_COLORIZE=False
   pushd generator > /dev/null
+  wget https://github.com/CollegesChat/china-university-list/releases/latest/download/output.csv
+  cat output.csv >> ./required/colleges.csv
   uv sync
   uv run python main.py
   popd > /dev/null
